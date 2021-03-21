@@ -1,86 +1,48 @@
 const  annotate = (source) => {
-  let cell = source.join ('');
-  let i = 0;
-  let finall = []; 
-  let space = 0;
-  let mine = 0;
+    //2
+
+    for (let i = 0; i < source.length; i++) {
+      let exploreredRow = [];
       //3
-     while (i < cell.length-1) {
-      (cell[i] === (' ')) ? space ++ : mine ++;
-      i++
-      }
-      if(space === cell.length-1 || mine === cell.length-1)  {return (finall = source) }
-      else { i = 0 };
-
-
-  //Обработка поля по горизонтали и вертикали
-  //let field = [];
-    function translatingField(trans) {
-      let field = trans.map(element => {
-        let row = '';
-        let last = element[element.length-1];
-          for (i = 0; i < element.length; i++) {
-            let prev = element[i-1];
-            let next = element[i+1];
-            //Выбор дальнейшего развития события в зависимости от того
-            //имеются ли мины по краям строки или нет 
-              function choise ([first,last,current]) {
-                  if (first === ' ' && last === ' ') {
-                      return noMines (current)
-                  }
-                  else {return isMines(current)}
-              }
-              function basic (item1) {
-                return (item1 === ' ' && (prev === '*' && next === '*')) ? row += 2 
-                :(item1 === ' ' && ((prev === ' ' && next === '*')||(prev === '*' && next === ' '))) ? row += 1 
-                :(item1 === ' ' && (next === '*' || prev === '*' )) ? row += 1 
-                : row += item1 
-              }
-              function isMines (item2) {
-                 return ((i === 0 || i === element.length-1) && item2 === '*') ? row += item2
-                :basic (item2)  
-              }
-              function noMines (item3) {
-                return (i === 0 && next === '*') ? row += 1 
-                :(i === element.length-1 && prev === '*') ? row += 1
-                :basic (item3)  
-              }
-              choise([element[0],last,element[i]])
-            }
-            return row
-      })
-      return field
-  }
-
-  //горизонталь
-  let translate = source; //Массива горизонталей 
-    translatingField(translate)
-  
-  /******************************************/
-
-  //вертикаль 
-  translate = translateToColumns(sourceField)
-  translatingField(translate)
-  //Создание массива вертикалей
-  function translateToColumns (cells) {
-      let collums = [];
-      let lastIndex = cells[0].length //для перехода к слудующему элементы вертикали
-      for (let c = 0; c < lastIndex; c++){ // с - текущая вертикаль 
-         //Создание текущей вертикали
-        function createVertical (vertical) {
-          let collumStr = vertical;
-          for (let i = 1; i < lastIndex; i++) {
-             collumStr += cells[i][c]
-          }
-            return collumStr
+      for (let j = 0; j < source[i].length; j++) {
+        source[i][j] === " " ? exploreredRow.push(toExploreСells(i, j, source)) : exploreredRow.push(field[i][j])
         }
-        collums.push(createVertical(cells[0][c]))
-      } 
-      return collums
-  }
-    translatingField(translate)
-/*******************************************/
-  
+        return exploreredRow
+    }
 }
+//8
+
+
+
+function toExploreСells (i, j, field) {  
+    let neighborhood = []; 
+    let neighbors = {
+        top : field[i - 1][j], topRight :  field[i - 1][j + 1],  right : field[i][j + 1], bottomRight : field[i + 1][j + 1], bottom :  field[i + 1][j], bottomLeft: field[i + 1][j - 1], left : field[i][j - 1],
+        topLeft : field[i - 1][j - 1]
+       };
+   //Верхняя строка 
+    if (i === 0) {
+        //Начальные клетки
+        (j === 0) ?  neighborhood = [neighbors.right, neighbors.bottomRight, neighbors.bottom] 
+        //Крайние клетки 
+        : (j === fieldwidth-1) ? neighborhood = [neighbors.bottom, neighbors.bottomLeft, neighbors.left]
+        : neighborhood = [neighbors.right, neighbors.bottomRight, neighbors.bottom, neighbors.bottomLeft,  neighbors.left]
+    }
+    //Нижняя строка 
+    else if  (i === field.length - 1) {
+        //Начальные клетки
+        (j === 0) ? neighborhood = [neighbors.top, neighbors.topRight, neighbors.right] 
+        //Крайние клетки 
+        : (j === fieldwidth-1) ? [neighbors.top,neighbors.left, neighbors.topLeft]
+        : neighborhood = [neighbors.top, neighbors.topRight, neighbors.right, neighbors.left, neighbors.topLeft]
+    }
+   else{
+        neighborhood =[neighbors.top, neighbors.topRight, neighbors.right, neighbors.bottomRightDiagonal, neighbors.bottom, neighbors.bottomLeftDiagonal, neighbors.left, neighbors.topLeft]
+   }
+   let mines = neighborhood.filter(item => item === "*").length
+   return mines !== 0 ? mines.toStirng() : " "
+}
+
+
 const sourceField = [' *  * ', '  *   ', '    * ', '   * *', ' *  * ', '      ']
-annotate (sourceField) 
+console.log(annotate (sourceField))
