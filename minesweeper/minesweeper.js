@@ -1,48 +1,61 @@
 const  annotate = (source) => {
-    //2
+    let result = []
+    let sourceMatrix = source.map(element => element.split(""))
 
     for (let i = 0; i < source.length; i++) {
-      let exploreredRow = [];
-      //3
+      let explorered = [];
+   
       for (let j = 0; j < source[i].length; j++) {
-        source[i][j] === " " ? exploreredRow.push(toExploreСells(i, j, source)) : exploreredRow.push(field[i][j])
+        sourceMatrix[i][j] === " " ? explorered.push(toExploreСells(i, j, sourceMatrix)) : explorered.push(sourceMatrix[i][j])
         }
-        return exploreredRow
+        result.push(explorered.join(""))
     }
+    return result
 }
-//8
-
 
 
 function toExploreСells (i, j, field) {  
     let neighborhood = []; 
-    let neighbors = {
-        top : field[i - 1][j], topRight :  field[i - 1][j + 1],  right : field[i][j + 1], bottomRight : field[i + 1][j + 1], bottom :  field[i + 1][j], bottomLeft: field[i + 1][j - 1], left : field[i][j - 1],
-        topLeft : field[i - 1][j - 1]
-       };
+    let neighbors = {};
    //Верхняя строка 
     if (i === 0) {
-        //Начальные клетки
-        (j === 0) ?  neighborhood = [neighbors.right, neighbors.bottomRight, neighbors.bottom] 
+        //Начальные клетки 
+        if (j === 0)  {
+            neighborhood = [neighbors.right = field[i][j + 1], neighbors.bottomRight =  field[i + 1][j + 1], neighbors.bottom = field[i + 1][j]] 
+        }
         //Крайние клетки 
-        : (j === fieldwidth-1) ? neighborhood = [neighbors.bottom, neighbors.bottomLeft, neighbors.left]
-        : neighborhood = [neighbors.right, neighbors.bottomRight, neighbors.bottom, neighbors.bottomLeft,  neighbors.left]
+        else if  (j === field-1) {
+            neighborhood = [neighbors.bottom = field[i + 1][j], neighbors.bottomLeft = field[i + 1][j - 1], neighbors.left = field[i][j - 1]] 
+        }
+        //Остальные клетки 
+        else {
+            neighborhood = [neighbors.right = field[i][j + 1], neighbors.bottomRight = field[i + 1][j + 1], neighbors.bottom = field[i + 1][j], neighbors.bottomLeft = field[i + 1][j - 1], neighbors.left = field[i][j - 1]] 
+        }
     }
     //Нижняя строка 
     else if  (i === field.length - 1) {
         //Начальные клетки
-        (j === 0) ? neighborhood = [neighbors.top, neighbors.topRight, neighbors.right] 
+        if (j === 0) {
+            neighborhood = [neighbors.top = field[i - 1][j], neighbors.topRight = field[i - 1][j + 1], neighbors.right = field[i][j + 1]] 
+        }
         //Крайние клетки 
-        : (j === fieldwidth-1) ? [neighbors.top,neighbors.left, neighbors.topLeft]
-        : neighborhood = [neighbors.top, neighbors.topRight, neighbors.right, neighbors.left, neighbors.topLeft]
+        else if (j === field.length - 1) {
+            neighborhood =  [neighbors.top = field[i - 1][j], neighbors.left = field[i][j - 1], neighbors.topLeft = field[i - 1][j - 1]]
+        }
+        //Остальные 
+        else {
+            neighborhood = [neighbors.top = field[i - 1][j], neighbors.topRight = field[i - 1][j + 1], neighbors.right = field[i][j + 1], neighbors.left = field[i][j - 1], neighbors.topLeft = field[i - 1][j - 1]]
+        }
     }
+    //Промежуточные строки
    else{
-        neighborhood =[neighbors.top, neighbors.topRight, neighbors.right, neighbors.bottomRightDiagonal, neighbors.bottom, neighbors.bottomLeftDiagonal, neighbors.left, neighbors.topLeft]
+        neighborhood =[neighbors.top = field[i - 1][j], neighbors.topRight = field[i - 1][j + 1], neighbors.right = field[i][j + 1], neighbors.bottomRight = field[i + 1][j + 1], neighbors.bottom  = field[i + 1][j], neighbors.bottomLeft = field[i + 1][j - 1], neighbors.left = field[i][j - 1], neighbors.topLeft = field[i - 1][j - 1]]
    }
    let mines = neighborhood.filter(item => item === "*").length
-   return mines !== 0 ? mines.toStirng() : " "
+   return mines !== 0 ? mines.toString() : " "
 }
 
-
-const sourceField = [' *  * ', '  *   ', '    * ', '   * *', ' *  * ', '      ']
+/*
+const sourceField =['***', '* *', '***']
 console.log(annotate (sourceField))
+*/
