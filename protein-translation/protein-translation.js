@@ -3,7 +3,7 @@
 // convenience to get you started writing code faster.
 //
 
-export const translate = () => {
+ export const translate = (rna) => {
   let codon = [];
   let protein = []
   //Разбиение на кодон
@@ -43,3 +43,4 @@ export const translate = () => {
   }
   return protein 
 };
+
