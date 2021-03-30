@@ -3,20 +3,30 @@
 // convenience to get you started writing code faster.
 //
 
-export class Triangle {
+ class Triangle {
   constructor(...sides) {
-    throw new Error('Remove this statement and implement this function');
+    this.a = arguments [0];
+    this.b = arguments [1];
+    this.c = arguments [2];
   }
 
   get isEquilateral() {
-    throw new Error('Remove this statement and implement this function');
+      return (this.leftSide === this.rightSide && this.leftSide === this.base && this.rightSide === this.base) ? true : false 
   }
 
   get isIsosceles() {
-    throw new Error('Remove this statement and implement this function');
+    return (this.a === this.b || this.a === this.c || this.b === this.c) ? true : false 
   }
 
   get isScalene() {
-    throw new Error('Remove this statement and implement this function');
+    return (this.a !== this.b && this.a !== this.c && this.b !== this.c) ? true : false 
   }
 }
+
+const triangle = new Triangle (2, 3, 4);
+/*
+console.log(triangle.isEquilateral)
+console.log(triangle.isIsosceles)
+console.log(triangle.isScalene)
+*/
+
