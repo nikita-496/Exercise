@@ -2,29 +2,38 @@
 // This is only a SKELETON file for the 'All Your Base' exercise. It's been provided as a
 // convenience to get you started writing code faster.
 //
-  const numerical = 5
-  const binary = 2 //Основание (система счисления)
-  const decimal = 10
+  const numerical = [1, 1, 2, 0]
+  const requiredRadix = 16 //Основание (система счисления)
+  const givenRedix = 3
  
-
- const convert = (num,oneRadix,twoRedix) =>{
-    let base = 0;
-    const a = (String(num).split(''))
-
-      for (let i =0; i < a.length; i++) {
-        let degree = a.length-[i+1] //степень
-        baseСalculation(a[i])
-        
-        //Функция выполняющая перевод числа из одной системы счисления (oneRadix) в другую (twoRedix)
-        function baseСalculation(number) { 
-          base += number * oneRadix ** degree
+   
+ const convert = (num,oneRadix,twoRedix) => {
+      let base = []
+      //Елси переводим в двоичную систему
+      if(requiredRadix === 2) {
+        while (num > twoRedix) {
+          let a = num;
+          base.push(Math.floor(a % twoRedix))
+          //ограничитель
+          num = num / twoRedix
         }
-      }
+        return base.concat(Math.floor(num)).reverse()
+      }     
 
-      return base 
+      //Елси переводим в десятичную систему
+      if(requiredRadix === 10) {
+          let rang = num.slice("").reverse();
+          for (let i = num.length-1; i >= 0; i--) {
+          base.push(rang[i] * oneRadix ** i)
+          };
+          return base.reduce((accumulator, element) => {
+            return accumulator + element
+          })
+      }
+      
   }
   
-  console.log(convert(numerical,decimal,binary))
+  console.log(convert(numerical,givenRedix,requiredRadix))
 
 
   //ДОРАБОТАТЬ ПРОГРАММУ В СООТВЕСТВИИ С ТЕСТАМИ
