@@ -1,42 +1,32 @@
-//
-// This is only a SKELETON file for the 'D&D Character' exercise. It's been provided as a
-// convenience to get you started writing code faster.
-//
+const AT_LEAST = new Error('Ability scores must be at least 3')
+const AT_MOST = new Error('Ability scores can be at most 18')
+const CHARACTERS = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
 
-export const abilityModifier = () => {
-  throw new Error('Remove this statement and implement this function');
-};
+export const abilityModifier = (constitution) => {
+  console.log(constitution)
+  if (constitution < 3)  throw AT_LEAST
+  if (constitution > 18)  throw AT_MOST
+  return Math.floor((constitution - 10) / 2)
+}
 
 export class Character {
+  constructor(){
+    for (let character of CHARACTERS) {
+      this[character] = Character.rollAbility()
+    }
+  }
+
   static rollAbility() {
-    throw new Error('Remove this statement and implement this function');
+    let scores = []
+    for (let i = 0; i < 4; i++) {
+      scores.push(Math.floor(Math.random() * (6 - 1 + 1)) + 1)
+    }
+     scores.sort().splice(0,1)
+     return scores.reduce((prev, cur) => prev + cur, 0)
   }
-
-  get strength() {
-    throw new Error('Remove this statement and implement this function');
-  }
-
-  get dexterity() {
-    throw new Error('Remove this statement and implement this function');
-  }
-
-  get constitution() {
-    throw new Error('Remove this statement and implement this function');
-  }
-
-  get intelligence() {
-    throw new Error('Remove this statement and implement this function');
-  }
-
-  get wisdom() {
-    throw new Error('Remove this statement and implement this function');
-  }
-
-  get charisma() {
-    throw new Error('Remove this statement and implement this function');
-  }
-
   get hitpoints() {
-    throw new Error('Remove this statement and implement this function');
+    return 10 + abilityModifier(Drizzt.constitution)
   }
 }
+
+const Drizzt = new Character()
